@@ -1,0 +1,10 @@
++incdir+../tb
+../rtl/apb_decoder.sv
+../rtl/gpio_peripheral.sv
+../rtl/tdm_arbiter.sv
+../rtl/system_regs.sv
+../rtl/apb_tdm_gpio_soc.sv
+../tb/interfaces/apb_if.sv
+../tb/interfaces/sideband_if.sv
+../tb/tb_pkg.sv
+../tb/tb_top.sv

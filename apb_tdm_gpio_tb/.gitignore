@@ -1,0 +1,5 @@
+sim/obj_dir/
+*.vcd
+*.wlf
+transcript
+.DS_Store
