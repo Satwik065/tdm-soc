@@ -12,21 +12,22 @@ class sideband_monitor extends uvm_monitor;
     
     function void build_phase(uvm_phase phase);
         super.build_phase(phase);
-        if(!uvm_config_db#(virtual sideband_if)::get(this, "", "vif", vif))
+        if(!uvm_config_db#(virtual sideband_if)::get(this, "", "sideband_vif", vif))
             `uvm_fatal("NOVIF", "Virtual interface not found");
     endfunction
 
-    task run_phase(uvm_phase phase);
+        task run_phase(uvm_phase phase);
+        sideband_item item;
         forever begin
-            @(vif.mon_cb);
-                sideband_item  = sideband_item::type_id::create(item, "this");
-                item.gpio_in   = vif.mon_cb.gpio_in;
-                item.tdm_req    = vif.mon_cb.tdm_req;
-                item.gpio_out  = vif.mon_cb.gpio_out;
-                item.gpio_oe   = vif.mon_cb.gpio_oe;
-                item.tdm_grant = vif.mon_cb.tdm_grant;
-                item.tdm_slot  = vif.mon_cb.tdm_slot;
-                ap.write(item);
+            @(posedge vif.clk);
+            item = sideband_item::type_id::create("item");
+            item.gpio_in   = vif.gpio_in;
+            item.tdm_req   = vif.tdm_req;
+            item.gpio_out  = vif.gpio_out;
+            item.gpio_oe   = vif.gpio_oe;
+            item.tdm_grant = vif.tdm_grant;
+            item.tdm_slot  = vif.tdm_slot;
+            ap.write(item);
         end
-        endtask
+    endtask
 endclass

@@ -9,18 +9,15 @@ class sideband_driver extends uvm_driver #(sideband_item);
 
     function void build_phase(uvm_phase phase);
         super.build_phase(phase);
-        if(!uvm_config_db#(virtual sideband_if)::get(this, "", "vif", vif))
+        if(!uvm_config_db#(virtual sideband_if)::get(this, "", "sideband_vif", vif))
             `uvm_fatal("NOVIF", "Virtual interface not found");
     endfunction
 
-    task run_phase(uvm_phase phase);
-        @(vif.drv_cb);
-        vif.drv_cb.gpio_in   <= 8'h0;
-        vif.drv_cb.tdm_req   <= 4'h0;
-
+        task run_phase(uvm_phase phase);
+        @(posedge vif.clk);
+        vif.gpio_in <= 0; vif.tdm_req <= 0;
         wait (vif.rst_n == 1);
-        repeat (5) @(vif.drv_cb);
-        `uvm_info(get_type_name(), "Starting driver", UVM_MEDIUM)
+        repeat (5) @(posedge vif.clk);
 
         forever begin
             seq_item_port.get_next_item(req);
@@ -30,16 +27,12 @@ class sideband_driver extends uvm_driver #(sideband_item);
     endtask
 
     task drive_item(sideband_item item);
-      @(vif.drv_cb);
-        vif.drv_cb.gpio_in     <= item.gpio_in;
-        vif.drv_cb.tdm_req     <= item.tdm_req;
-
-        repeat(item.hc) @(vif.drv_cb);
-
-        vif.drv_cb.gpio_in     <= 8'h0;
-        vif.drv_cb.tdm_req     <= 4'h0;
-
-        @(vif.drv_cb);
-
-        endtask
+        @(posedge vif.clk);
+        vif.gpio_in <= item.gpio_in;
+        vif.tdm_req <= item.tdm_req;
+        repeat(item.hc) @(posedge vif.clk);
+        vif.gpio_in <= 0;
+        vif.tdm_req <= 0;
+        @(posedge vif.clk);
+    endtask
 endclass

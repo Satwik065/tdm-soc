@@ -1,5 +1,9 @@
 sim/obj_dir/
+sim/verilator/
+sim/coverage_report/
+sim/coverage.dat
+sim/log_*.txt
+sim/results_summary.txt
 *.vcd
 *.wlf
 transcript
-.DS_Store

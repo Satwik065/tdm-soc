@@ -16,6 +16,7 @@ package tb_pkg;
 
     `include "env/env_cfg.sv"
     `include "env/ref_model.sv"
+    `include "env/coverage.sv"
     `include "env/scoreboard.sv"
     `include "env/env.sv"
 

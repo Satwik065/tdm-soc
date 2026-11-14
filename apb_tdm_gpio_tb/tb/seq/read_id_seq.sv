@@ -12,7 +12,7 @@ class read_id_seq extends apb_base_seq;
 
        if (rdata != 32'h54444D31) begin
          `uvm_error(get_type_name(), 
-                 $sformatf("ID Mismatch! Expected: 32'h54444D31, Received: 32'h%08h", read_data))
+                 $sformatf("ID Mismatch! Expected: 32'h54444D31, Received: 32'h%08h", rdata))
        end else begin
                 `uvm_info(get_type_name(), "ID Read PASSED!", UVM_MEDIUM)
        end

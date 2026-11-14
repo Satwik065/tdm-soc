@@ -9,10 +9,10 @@ class apb_base_seq extends uvm_sequence #(apb_item);
         req = apb_item::type_id::create("req");
            start_item(req);
            req.pwrite = 1;
-           req.paddr  = 1;
+           req.paddr  = addr;
            req.pwdata = data;
            finish_item(req);
-           if(req.err != 1)
+           if(req.err == 1)
            `uvm_error("APB_BASE_SEQ", $sformatf("Write error in APB!"))
   endtask
 

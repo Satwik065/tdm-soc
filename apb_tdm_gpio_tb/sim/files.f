@@ -6,5 +6,7 @@
 ../rtl/apb_tdm_gpio_soc.sv
 ../tb/interfaces/apb_if.sv
 ../tb/interfaces/sideband_if.sv
+../tb/sva/apb_tdm_assertions.sv
 ../tb/tb_pkg.sv
 ../tb/tb_top.sv
+../tb/sva/apb_tdm_bind.sv

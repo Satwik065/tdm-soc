@@ -1,0 +1,20 @@
+class reset_test extends base_test;
+    `uvm_component_utils(reset_test)
+
+    reset_check_seq seq; 
+
+    function new(string name = "reset_test", uvm_component parent = null);
+        super.new(name, parent);
+    endfunction
+
+    virtual task run_phase(uvm_phase phase);
+        super.run_phase(phase);
+        
+        phase.raise_objection(this);
+        
+        seq = reset_check_seq::type_id::create("seq");
+        seq.start(e.apb_agnt.sqr);
+        
+        phase.drop_objection(this);
+    endtask
+endclass

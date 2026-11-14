@@ -4,6 +4,7 @@ class env extends uvm_env;
     apb_agent apb_agnt;
     sideband_agent sb_agnt;
     scoreboard scb;
+    coverage cov;
 
     env_cfg   cfg;
 
@@ -25,6 +26,7 @@ class env extends uvm_env;
     apb_agnt = apb_agent::type_id::create("apb_agnt", this);
     sb_agnt  = sideband_agent::type_id::create("sb_agnt", this);
     scb      = scoreboard::type_id::create("scb", this);
+    cov      = coverage::type_id::create("cov", this);
 
     `uvm_info(get_type_name(), "Building Environment", UVM_MEDIUM)
 
@@ -34,6 +36,8 @@ class env extends uvm_env;
         super.connect_phase(phase);
 
         apb_agnt.ap.connect(scb.apb_export);
-        sb_agnt.ap.connect(scb.sideband_export);
+        sb_agnt.ap.connect(scb.sb_export);
+        apb_agnt.ap.connect(cov.analysis_export);
+        
         endfunction
 endclass
